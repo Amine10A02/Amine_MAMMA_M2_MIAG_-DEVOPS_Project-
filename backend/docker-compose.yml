@@ -1,0 +1,24 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build: .
+    container_name: backend_api
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: ${PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      MONGO_URI: mongodb://mongo:27017/microshop
+
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
