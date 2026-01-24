@@ -22,6 +22,6 @@ spec:
             - name: PORT
               value: "3000"
             - name: MONGO_URI
-              value: "mongodb://mongo:27017/microshop"
+              value: "mongodb://mongo:27017/microshop?directConnection=true"
             - name: JWT_SECRET
               value: "AmineDevopsSecretKey"
