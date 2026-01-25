@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api
+  namespace: microshop
 spec:
   replicas: 1
   selector:
@@ -12,16 +13,16 @@ spec:
       labels:
         app: api
     spec:
+      serviceAccountName: api-sa
       containers:
         - name: api
           image: docker.io/amine1002/backend-api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: api-secrets
           env:
             - name: PORT
               value: "3000"
-            - name: MONGO_URI
-              value: "mongodb://mongo:27017/microshop?directConnection=true"
-            - name: JWT_SECRET
-              value: "AmineDevopsSecretKey"

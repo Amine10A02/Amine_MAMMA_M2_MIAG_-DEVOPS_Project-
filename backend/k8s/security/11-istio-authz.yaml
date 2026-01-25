@@ -1,0 +1,34 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-all
+  namespace: microshop
+spec: {}
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-client-to-api
+  namespace: microshop
+spec:
+  selector:
+    matchLabels:
+      app: api
+  rules:
+    - from:
+        - source:
+            namespaces: ["microshop"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-api-to-mongo
+  namespace: microshop
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+  rules:
+    - from:
+        - source:
+            namespaces: ["microshop"]
