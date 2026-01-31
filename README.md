@@ -1,143 +1,75 @@
-# MicroShop — Application Microservices avec une Approche DevOps Sécurisée sur Kubernetes
+#  MicroShop — Application Microservices avec une Approche DevOps Sécurisée sur Kubernetes
 
 ## 1. Présentation de l’application
 
-MicroShop est une application composée de plusieurs microservices REST simulant le fonctionnement d’une boutique en ligne. Elle est déployée sur Kubernetes en appliquant une démarche DevOps orientée sécurité.
+**MicroShop** est une application distribuée composée de plusieurs microservices REST simulant le fonctionnement d’une boutique en ligne.
 
-L’application est constituée de trois services :
+L’objectif principal est **architectural et sécuritaire** : démontrer comment déployer et sécuriser une application microservices sur **:contentReference[oaicite:0]{index=0}** en appliquant les **bonnes pratiques DevOps et DevSecOps**.
 
-| Service         | Rôle                                                     |
-|-----------------|----------------------------------------------------------|
-| client-service  | Microservice consommateur de l’API                       |
-| api-service     | API Node.js / Express contenant la logique métier        |
-| mongo-service   | Base de données MongoDB assurant la persistance          |
+L’application repose sur trois services :
 
-Les services communiquent uniquement à l’intérieur du cluster Kubernetes.
+| Service | Rôle |
+|---|---|
+| `client-service` | Consommateur de l’API |
+| `api-service` | API Node.js / Express contenant la logique métier |
+| `mongo-service` | Base de données **:contentReference[oaicite:1]{index=1}** assurant la persistance |
+
+Les communications entre services s’effectuent **uniquement à l’intérieur du cluster Kubernetes**.
 
 ---
 
-## 2. Objectifs DevOps du projet
+## 2. Objectifs DevOps et Sécurité
 
-L’objectif de ce projet est de démontrer la mise en œuvre des bonnes pratiques DevOps ainsi que la sécurisation d’un cluster Kubernetes :
+Ce projet met en œuvre une chaîne complète de pratiques **DevOps orientées sécurité** :
 
-- Conteneurisation avec Docker
-- Déploiement Kubernetes (Deployments, Services, PVC)
-- Isolation via namespace
-- RBAC (Role Based Access Control)
-- Service Mesh avec Istio
-- Chiffrement des communications avec mTLS STRICT
-- Contrôle des flux réseau avec AuthorizationPolicy
+- Conteneurisation avec **:contentReference[oaicite:2]{index=2}**
+- Orchestration Kubernetes (Deployments, Services, PVC)
+- Isolation via namespace dédié
+- RBAC (Role-Based Access Control)
+- Service Mesh avec **:contentReference[oaicite:3]{index=3}**
+- Chiffrement des communications internes via **mTLS STRICT**
+- Contrôle des flux réseau avec **AuthorizationPolicy (deny-all par défaut)**
 - Gestion sécurisée des secrets Kubernetes
-- Audit de sécurité des images Docker
+- Audit de sécurité des images Docker avec **:contentReference[oaicite:4]{index=4}**
 
 ---
 
-## 3. Structure du projet
+## 3. Architecture globale
 
+
+::contentReference[oaicite:5]{index=5}
+
+
+L’architecture repose sur :
+
+- Un namespace dédié `microshop`
+- Des ServiceAccounts et règles RBAC minimales
+- L’injection automatique du proxy **Envoy** via Istio
+- Un chiffrement systématique des communications inter-services
+- Un contrôle strict des flux réseau autorisés
+
+---
+
+## 4. Structure du projet
+
+```bash
 backend/
 ├── k8s/
-│ ├── security/
-│ │ ├── 00-namespace.yaml
-│ │ ├── 01-api-rbac.yaml
-│ │ ├── 10-istio-mtls-strict.yaml
-│ │ └── 11-istio-authz.yaml
-│ ├── api-deployment.yaml
-│ ├── api-service.yaml
-│ ├── api-ingress.yaml
-│ ├── client-deployment.yaml
-│ ├── client-service.yaml
-│ ├── mongo-deployment.yaml
-│ ├── mongo-service.yaml
-│ └── mongo-pvc.yaml
+│   ├── security/
+│   │   ├── 00-namespace.yaml
+│   │   ├── 01-api-rbac.yaml
+│   │   ├── 10-istio-mtls-strict.yaml
+│   │   └── 11-istio-authz.yaml
+│   ├── api-deployment.yaml
+│   ├── api-service.yaml
+│   ├── api-ingress.yaml
+│   ├── client-deployment.yaml
+│   ├── client-service.yaml
+│   ├── mongo-deployment.yaml
+│   ├── mongo-service.yaml
+│   └── mongo-pvc.yaml
 ├── src/
 ├── client-service/
 ├── Dockerfile
 ├── docker-compose.yml
 └── package.json
-
-
----
-
-## 4. Images Docker
-
-Les microservices sont conteneurisés et publiés sur Docker Hub :
-
-- `amine1002/backend-api`
-- `amine1002/frontend-client`
-
-Docker Hub est sécurisé avec l’authentification à deux facteurs (2FA) et un Access Token.
-
----
-
-## 5. Procédure de reproduction complète
-
-### 5.1 Cloner le projet
-
-```bash
-git clone <repo>
-cd backend
-5.2 Créer le fichier .env (non commité)
-MONGO_URI=mongodb://mongo:27017/microshop?directConnection=true
-JWT_SECRET=AmineDevopsSecretKey
-5.3 Créer le namespace et le secret Kubernetes
-kubectl create namespace microshop
-kubectl -n microshop create secret generic api-secrets --from-env-file=.env
-5.4 Déployer l’application
-kubectl apply -f k8s/security/00-namespace.yaml
-kubectl apply -f k8s/security/01-api-rbac.yaml
-kubectl apply -f k8s/
-Vérification :
-
-kubectl -n microshop get pods
-6. Vérification du RBAC
-kubectl auth can-i get pods --as=system:serviceaccount:microshop:api-sa -n microshop
-kubectl auth can-i delete pods --as=system:serviceaccount:microshop:api-sa -n microshop
-7. Installation et vérification d’Istio
-kubectl -n istio-system get pods
-kubectl label namespace microshop istio-injection=enabled --overwrite
-kubectl -n microshop get pods
-Les pods doivent apparaître en état 2/2 (application + proxy Envoy).
-
-8. Activation du mTLS STRICT
-kubectl apply -f k8s/security/10-istio-mtls-strict.yaml
-kubectl -n microshop get peerauthentication
-9. AuthorizationPolicy — Contrôle des flux réseau
-kubectl apply -f k8s/security/11-istio-authz.yaml
-kubectl -n microshop get authorizationpolicy
-Règles mises en place :
-
-Refus de tout trafic par défaut (deny-all)
-
-Autorisation du trafic client-service → api-service
-
-Autorisation du trafic api-service → mongo-service
-
-10. Persistance MongoDB
-kubectl -n microshop get pvc
-11. Audit de sécurité des images Docker avec Trivy
-docker run --rm aquasec/trivy:latest image amine1002/backend-api:latest
-docker run --rm aquasec/trivy:latest image amine1002/frontend-client:latest
-12. Conclusion
-Ce projet démontre :
-
-Le déploiement d’une application microservices sur Kubernetes
-
-L’application des bonnes pratiques DevOps
-
-La sécurisation avancée d’un cluster Kubernetes avec :
-
-RBAC
-
-Istio Service Mesh
-
-mTLS STRICT
-
-AuthorizationPolicy
-
-Secrets Kubernetes
-
-Audit des images Docker
-
-Auteur
-Amine — M2 MIAGE / DevOps
-
