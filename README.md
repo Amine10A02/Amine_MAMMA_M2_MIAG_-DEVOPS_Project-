@@ -71,7 +71,7 @@ Ce projet met en œuvre :
 ### 5.1 Cloner le projet
 
 ``` bash
-git clone <repo>
+git clone https://github.com/Amine10A02/Amine_MAMMA_M2_MIAG_-DEVOPS_Project-.git
 cd backend
 ```
 
