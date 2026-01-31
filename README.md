@@ -1,40 +1,40 @@
-# MicroShop --- Application Microservices avec une Approche DevOps Sécurisée sur Kubernetes
+# MicroShop — Application Microservices avec une Approche DevOps Sécurisée sur Kubernetes
 
-## 1. Présentation de l'application
+## 1. Présentation de l’application
 
-MicroShop est une application composée de microservices REST simulant le
-fonctionnement d'une boutique en ligne.\
-Elle est déployée sur Kubernetes selon une démarche DevOps orientée
-sécurité.
+MicroShop est une application composée de microservices REST simulant le fonctionnement d’une boutique en ligne.  
+Elle est déployée sur Kubernetes selon une démarche DevOps orientée sécurité.
 
-  Service          Rôle
-  ---------------- ---------------------------------------------------
-  client-service   Microservice consommateur de l'API
-  api-service      API Node.js / Express contenant la logique métier
-  mongo-service    Base de données MongoDB assurant la persistance
+L’application est constituée de trois services :
 
-Les services communiquent uniquement à l'intérieur du cluster
-Kubernetes.
+| Service        | Rôle                                              |
+|----------------|---------------------------------------------------|
+| client-service | Microservice consommateur de l’API                |
+| api-service    | API Node.js / Express contenant la logique métier |
+| mongo-service  | Base de données MongoDB assurant la persistance   |
 
-------------------------------------------------------------------------
+Les services communiquent uniquement à l’intérieur du cluster Kubernetes.
+
+---
 
 ## 2. Objectifs DevOps du projet
 
 Ce projet met en œuvre :
 
--   Conteneurisation avec Docker
--   Déploiement Kubernetes (Deployments, Services, PVC)
--   Isolation via namespace
--   RBAC (Role Based Access Control)
--   Service Mesh avec Istio
--   Chiffrement des communications avec mTLS STRICT
--   Contrôle des flux réseau avec AuthorizationPolicy
--   Gestion sécurisée des secrets Kubernetes
--   Audit de sécurité des images Docker
+- Conteneurisation avec Docker
+- Déploiement Kubernetes (Deployments, Services, PVC)
+- Isolation via namespace
+- RBAC (Role Based Access Control)
+- Service Mesh avec Istio
+- Chiffrement des communications avec mTLS STRICT
+- Contrôle des flux réseau avec AuthorizationPolicy
+- Gestion sécurisée des secrets Kubernetes
+- Audit de sécurité des images Docker
 
-------------------------------------------------------------------------
+---
 
 ## 3. Structure du projet
+
 
     backend/
     ├── k8s/
@@ -167,17 +167,28 @@ docker run --rm aquasec/trivy:latest image amine1002/frontend-client:latest
 
 ------------------------------------------------------------------------
 
+
+
 ## 12. Conclusion
 
-Ce projet démontre :
+Ce projet illustre la mise en œuvre complète d’une application microservices déployée sur Kubernetes selon une approche DevOps centrée sur la sécurité.
 
--   Le déploiement d'une application microservices sur Kubernetes
--   L'application des bonnes pratiques DevOps
--   La sécurisation d'un cluster Kubernetes avec RBAC, Istio, mTLS,
-    AuthorizationPolicy, secrets et audit d'images
+Au-delà du simple déploiement applicatif, MicroShop met en évidence :
+
+- L’automatisation du déploiement via des manifestes Kubernetes structurés
+- L’isolation des ressources grâce à l’utilisation des namespaces
+- La mise en place d’un contrôle d’accès fin avec le RBAC
+- La sécurisation des communications internes par l’intégration d’un Service Mesh (Istio) et l’activation du mTLS STRICT
+- Le contrôle précis des flux réseau grâce aux AuthorizationPolicy
+- La gestion sécurisée des informations sensibles avec les secrets Kubernetes
+- L’analyse de la sécurité des images Docker à l’aide de Trivy
+- La configuration d’un Ingress / Gateway permettant l’exposition contrôlée de l’API vers l’extérieur du cluster
+
+Ainsi, ce projet constitue une démonstration concrète des bonnes pratiques DevOps appliquées à un environnement Kubernetes sécurisé, en intégrant à la fois les aspects déploiement, réseau, sécurité, exposition des services et persistance des données.
+
 
 ------------------------------------------------------------------------
 
 ## Auteur
 
-Amine --- M2 MIAGE / DevOps
+Amine MAMMA --- M2 MIAGE / DevOps
