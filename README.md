@@ -73,3 +73,21 @@ backend/
 ├── Dockerfile
 ├── docker-compose.yml
 └── package.json
+
+
+
+##5. Images Docker
+
+Images publiées sur Docker Hub :
+
+amine1002/backend-api
+
+amine1002/frontend-client
+
+Mesures de sécurité mises en place :
+
+Authentification 2FA
+
+Utilisation d’un Access Token
+
+Scan de vulnérabilités avec Trivy
