@@ -1,5 +1,5 @@
 # Devops project
-# 🛒
+# 
 MicroShop — Application Microservices déployée avec une approche DevOps sécurisée
 
 ## 1. Présentation de l’application
