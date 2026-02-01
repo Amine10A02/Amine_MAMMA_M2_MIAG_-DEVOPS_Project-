@@ -87,6 +87,19 @@ Laisser la commande minikube tunnel ouverte dans un terminal séparé.
 Cette étape est nécessaire sous Windows avec le driver Docker pour permettre à l’Ingress d’être accessible depuis le navigateur.
 
 
+**Ingress test**
+
+
+```bash
+kubectl -n microshop get ingress
+
+```
+
+<img width="523" height="47" alt="image" src="https://github.com/user-attachments/assets/885026f3-9ee5-4f18-8eac-3e44a0dd7d52" />
+
+
+
+
 ### 5.3 Créer le fichier `.env` (non versionné)
 
 ``` env
