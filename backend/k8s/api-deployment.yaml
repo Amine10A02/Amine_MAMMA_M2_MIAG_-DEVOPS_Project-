@@ -16,7 +16,7 @@ spec:
       serviceAccountName: api-sa
       containers:
         - name: api
-          image: docker.io/amine1002/backend-api:latest
+          image:  docker.io/amine1002/backend-api:v101
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
