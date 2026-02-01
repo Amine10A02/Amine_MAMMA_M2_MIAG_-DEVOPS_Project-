@@ -75,10 +75,22 @@ git clone https://github.com/Amine10A02/Amine_MAMMA_M2_MIAG_-DEVOPS_Project-.git
 cd backend
 ```
 
-### 5.2 Créer le fichier `.env` (non versionné)
+### 5.2 Démarrer Minikube et activer l’Ingress
+
+```bash
+minikube start --driver=docker
+minikube addons enable ingress
+minikube tunnel
+
+```
+Laisser la commande minikube tunnel ouverte dans un terminal séparé.
+Cette étape est nécessaire sous Windows avec le driver Docker pour permettre à l’Ingress d’être accessible depuis le navigateur.
+
+
+### 5.3 Créer le fichier `.env` (non versionné)
 
 ``` env
-MONGO_URI=mongodb://mongo:27017/microshop?directConnection=true
+MONGO_URI=mongodb://mongo:27017/microshop
 JWT_SECRET=AmineDevopsSecretKey
 ```
 
@@ -102,15 +114,17 @@ Vérification :
 ``` bash
 kubectl -n microshop get pods
 ```
+<img width="485" height="62" alt="image" src="https://github.com/user-attachments/assets/f443aff3-8068-44a1-9beb-6d6a1d8e2c18" />
 
-------------------------------------------------------------------------
 
-## 6. Vérification du RBAC
 
+### 5.5 Vérification de la communication entre microservices(Preuve que l’API communique avec MongoDB)
 ``` bash
-kubectl auth can-i get pods --as=system:serviceaccount:microshop:api-sa -n microshop
-kubectl auth can-i delete pods --as=system:serviceaccount:microshop:api-sa -n microshop
+kubectl -n microshop logs deploy/api
 ```
+
+<img width="498" height="77" alt="image" src="https://github.com/user-attachments/assets/ab861fd4-650d-461c-8baf-986105a8155e" />
+
 
 ------------------------------------------------------------------------
 
@@ -121,21 +135,38 @@ kubectl -n istio-system get pods
 kubectl label namespace microshop istio-injection=enabled --overwrite
 kubectl -n microshop get pods
 ```
+<img width="558" height="39" alt="image" src="https://github.com/user-attachments/assets/a30bc0ca-a368-4eb3-8db5-f2cf5e7e3f93" />
 
-Les pods doivent être en état `2/2` (application + proxy Envoy).
 
 ------------------------------------------------------------------------
 
-## 8. Activation du mTLS STRICT
+## 8. Vérification du RBAC
+
+``` bash
+kubectl auth can-i get pods --as=system:serviceaccount:microshop:api-sa -n microshop
+kubectl auth can-i delete pods --as=system:serviceaccount:microshop:api-sa -n microshop
+```
+<img width="649" height="36" alt="image" src="https://github.com/user-attachments/assets/fd64465a-d38d-4b4f-a937-d432f9a17b35" />
+
+Le ServiceAccount api-sa a le droit de lire les pods 
+
+Le ServiceAccount api-sa n’a PAS le droit de supprimer les pods
+
+------------------------------------------------------------------------
+## 9. Activation du mTLS STRICT
 
 ``` bash
 kubectl apply -f k8s/security/10-istio-mtls-strict.yaml
 kubectl -n microshop get peerauthentication
 ```
 
+<img width="649" height="61" alt="image" src="https://github.com/user-attachments/assets/cfdda1d2-2e93-4e19-ae5e-eac9878cdb42" />
+
+Le mTLS STRICT est bien actif dans le namespace microshop.
+
 ------------------------------------------------------------------------
 
-## 9. AuthorizationPolicy --- Contrôle des flux réseau
+## 10. AuthorizationPolicy --- Contrôle des flux réseau
 
 ``` bash
 kubectl apply -f k8s/security/11-istio-authz.yaml
@@ -148,17 +179,28 @@ Règles appliquées :
 -   client-service → api-service autorisé
 -   api-service → mongo-service autorisé
 
+
+<img width="649" height="83" alt="image" src="https://github.com/user-attachments/assets/70d6a3b2-ab16-49b0-90f9-f9122e667a62" />
+
+
+
+
+le contrôle des flux réseau avec Istio est bien en place
+
 ------------------------------------------------------------------------
 
-## 10. Persistance MongoDB
+## 11. Persistance MongoDB
 
 ``` bash
 kubectl -n microshop get pvc
 ```
+<img width="544" height="31" alt="image" src="https://github.com/user-attachments/assets/14a9da04-f4c6-430c-9837-1d3d70ddeb90" />
+
+la persistance MongoDB fonctionne correctement grâce au PVC
 
 ------------------------------------------------------------------------
 
-## 11. Audit de sécurité des images Docker avec Trivy
+## 12. Audit de sécurité des images Docker avec Trivy
 
 ``` bash
 docker run --rm aquasec/trivy:latest image amine1002/backend-api:latest
@@ -167,9 +209,7 @@ docker run --rm aquasec/trivy:latest image amine1002/frontend-client:latest
 
 ------------------------------------------------------------------------
 
-
-
-## 12. Conclusion
+## 13. Conclusion
 
 Ce projet illustre la mise en œuvre complète d’une application microservices déployée sur Kubernetes selon une approche DevOps centrée sur la sécurité.
 
@@ -182,13 +222,14 @@ Au-delà du simple déploiement applicatif, MicroShop met en évidence :
 - Le contrôle précis des flux réseau grâce aux AuthorizationPolicy
 - La gestion sécurisée des informations sensibles avec les secrets Kubernetes
 - L’analyse de la sécurité des images Docker à l’aide de Trivy
-- La configuration d’un Ingress / Gateway permettant l’exposition contrôlée de l’API vers l’extérieur du cluster
 
-Ainsi, ce projet constitue une démonstration concrète des bonnes pratiques DevOps appliquées à un environnement Kubernetes sécurisé, en intégrant à la fois les aspects déploiement, réseau, sécurité, exposition des services et persistance des données.
-
+Ainsi, ce projet constitue une démonstration concrète des bonnes pratiques DevOps appliquées à un environnement Kubernetes sécurisé, en intégrant à la fois les aspects déploiement, réseau, sécurité et persistance des données.
 
 ------------------------------------------------------------------------
 
+
+
+
 ## Auteur
 
-Amine MAMMA --- M2 MIAGE / DevOps
+Amine MAMMA  --- M2 MIAGE / DevOps
