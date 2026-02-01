@@ -60,6 +60,8 @@ Ce projet met en œuvre :
 ------------------------------------------------------------------------
 
 ## 4. Images Docker
+Les images Docker sont publiées sur Docker Hub et utilisées directement
+par les manifestes Kubernetes :
 
 -   `amine1002/backend-api`
 -   `amine1002/frontend-client`
