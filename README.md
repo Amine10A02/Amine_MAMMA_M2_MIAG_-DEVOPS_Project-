@@ -22,7 +22,7 @@ Les services communiquent uniquement à l’intérieur du cluster Kubernetes.
 Ce projet met en œuvre :
 
 - Conteneurisation avec Docker
-- Déploiement Kubernetes (Deployments, Services, PVC)
+- Déploiement Kubernetes (Deployments, Services, PVC, Ingress)
 - Isolation via namespace
 - RBAC (Role Based Access Control)
 - Service Mesh avec Istio
