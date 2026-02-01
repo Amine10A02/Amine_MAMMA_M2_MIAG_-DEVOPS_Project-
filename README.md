@@ -151,6 +151,16 @@ kubectl -n microshop get svc
 <img width="440" height="65" alt="image" src="https://github.com/user-attachments/assets/2b27cd10-8f75-423a-b79b-1b637ccaaabd" />
 
 
+### 5.6 vérification  que le client-service est accessible depuis l’extérieur du cluster et qu’il communique correctement avec l’api-service et la base MongoDB via les services Kubernetes. 
+
+
+``` bash
+kubectl -n microshop port-forward svc/client 8080:8080
+```
+
+
+<img width="562" height="44" alt="image" src="https://github.com/user-attachments/assets/13b07613-249f-42f7-8d0a-f9b2602cbda6" />
+
 
 
 ------------------------------------------------------------------------
