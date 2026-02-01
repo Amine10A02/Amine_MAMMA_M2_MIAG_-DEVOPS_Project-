@@ -227,8 +227,9 @@ Ainsi, ce projet constitue une démonstration concrète des bonnes pratiques Dev
 
 ------------------------------------------------------------------------
 
+## 14. Google Labs  
 
-
+<img width="929" height="346" alt="image" src="https://github.com/user-attachments/assets/6cadfc14-1a38-4c84-91f6-5065e85c534a" />
 
 ## Auteur
 
