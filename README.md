@@ -141,6 +141,18 @@ kubectl -n microshop logs deploy/api
 <img width="498" height="77" alt="image" src="https://github.com/user-attachments/assets/ab861fd4-650d-461c-8baf-986105a8155e" />
 
 
+### 5.5 Vérification des Services Kubernetes
+
+``` bash
+kubectl -n microshop get svc
+```
+
+
+<img width="440" height="65" alt="image" src="https://github.com/user-attachments/assets/2b27cd10-8f75-423a-b79b-1b637ccaaabd" />
+
+
+
+
 ------------------------------------------------------------------------
 
 ## 7. Installation et vérification d'Istio
