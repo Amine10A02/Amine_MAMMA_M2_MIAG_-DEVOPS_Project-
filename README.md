@@ -264,9 +264,10 @@ Ainsi, ce projet constitue une démonstration concrète des bonnes pratiques Dev
 
 ------------------------------------------------------------------------
 
-## 14. Google Labs  
+## 14. Capture d’écran des Google Labs réalisée
 
-<img width="929" height="346" alt="image" src="https://github.com/user-attachments/assets/6cadfc14-1a38-4c84-91f6-5065e85c534a" />
+<img width="880" height="432" alt="image" src="https://github.com/user-attachments/assets/b50d082c-3a69-40a2-a77b-4283f2b2a97a" />
+
 
 ## Auteur
 
